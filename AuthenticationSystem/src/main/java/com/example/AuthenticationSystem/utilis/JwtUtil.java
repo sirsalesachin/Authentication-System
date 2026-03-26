@@ -19,7 +19,6 @@ public class JwtUtil {
         return Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
     }
 
-    // ✅ Generate token
     public String generateToken(String email) {
         return Jwts.builder()
                 .setClaims(new HashMap<>())
@@ -30,12 +29,10 @@ public class JwtUtil {
                 .compact();
     }
 
-    // ✅ Extract username
     public String extractUsername(String token) {
         return extractAllClaims(token).getSubject();
     }
 
-    // ✅ Extract all claims
     public Claims extractAllClaims(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(getSignInKey())
@@ -44,13 +41,11 @@ public class JwtUtil {
                 .getBody();
     }
 
-    // ✅ Validate token
     public boolean validateToken(String token, UserDetails userDetails) {
         final String username = extractUsername(token);
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 
-    // ✅ Check expiry
     private boolean isTokenExpired(String token) {
         return extractAllClaims(token).getExpiration().before(new Date());
     }
